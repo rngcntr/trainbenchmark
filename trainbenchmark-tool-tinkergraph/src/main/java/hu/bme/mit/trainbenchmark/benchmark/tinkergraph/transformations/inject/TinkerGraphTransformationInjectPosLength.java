@@ -12,6 +12,7 @@
 package hu.bme.mit.trainbenchmark.benchmark.tinkergraph.transformations.inject;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.driver.GraphDriver;
 import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.matches.TinkerGraphPosLengthInjectMatch;
@@ -27,9 +28,10 @@ public class TinkerGraphTransformationInjectPosLength<TTinkerGraphDriver extends
 
 	@Override
 	public void activate(final Collection<TinkerGraphPosLengthInjectMatch> matches) {
-		for (final TinkerGraphPosLengthInjectMatch match : matches) {
-			match.getSegment().property(ModelConstants.LENGTH, 0);
-		}
+		driver.traversal()
+			.V(matches.stream().map(m -> m.getSegment()).collect(Collectors.toList()))
+			.property(ModelConstants.LENGTH, 0)
+			.iterate();
 	}
 
 }

@@ -12,7 +12,9 @@
 package hu.bme.mit.trainbenchmark.benchmark.tinkergraph.transformations.inject;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 
@@ -31,12 +33,11 @@ public class TinkerGraphTransformationInjectRouteSensor<TTinkerGraphDriver exten
 	@Override
 	public void activate(final Collection<TinkerGraphRouteSensorInjectMatch> matches) {
 		for (final TinkerGraphRouteSensorInjectMatch match : matches) {
-			final Iterable<Edge> requiress = () -> match.getRoute().edges(Direction.OUT, ModelConstants.REQUIRES);
-			for (final Edge requires : requiress) {
-				if (requires.inVertex().equals(match.getSensor())) {
-					requires.remove();
-				}
-			}
+			driver.traversal()
+				.V(match.getRoute())
+				.outE(ModelConstants.REQUIRES)
+				.where(__.inV().is(match.getSensor()))
+				.drop().iterate();
 		}
 	}
 

@@ -14,6 +14,7 @@ package hu.bme.mit.trainbenchmark.benchmark.tinkergraph.transformations.repair;
 import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.driver.GraphDriver;
 import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.matches.TinkerGraphSemaphoreNeighborMatch;
 import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.transformations.TinkerGraphTransformation;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
@@ -31,11 +32,10 @@ public class TinkerGraphTransformationRepairSemaphoreNeighbor<TTinkerGraphDriver
 	@Override
 	public void activate(final Collection<TinkerGraphSemaphoreNeighborMatch> matches) {
 		for (final TinkerGraphSemaphoreNeighborMatch match : matches) {
-			final Vertex semaphore = match.getSemaphore();
-			final Vertex route2 = match.getRoute2();
-			if (!route2.edges(Direction.OUT, ENTRY).hasNext()) {
-				route2.addEdge(ENTRY, semaphore);
-			}
+			driver.traversal().V(match.getRoute2())
+				.not(__.outE(ENTRY))
+				.addE(ENTRY).to(match.getSemaphore())
+				.iterate();
 		}
 	}
 

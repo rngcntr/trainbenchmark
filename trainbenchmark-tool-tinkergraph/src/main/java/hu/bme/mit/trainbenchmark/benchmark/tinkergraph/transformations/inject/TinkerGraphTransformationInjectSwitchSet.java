@@ -30,11 +30,16 @@ public class TinkerGraphTransformationInjectSwitchSet<TTinkerGraphDriver extends
 	@Override
 	public void activate(final Collection<TinkerGraphSwitchSetInjectMatch> matches) {
 		for (final TinkerGraphSwitchSetInjectMatch match : matches) {
-			final Vertex sw = match.getSw();
-			final String currentPositionString = (String) sw.property(ModelConstants.CURRENTPOSITION).value();
+			final String currentPositionString = (String) driver.traversal()
+				.V(match.getSw())
+				.values(ModelConstants.CURRENTPOSITION)
+				.next();
 			final Position currentPosition = Position.valueOf(currentPositionString);
 			final Position newCurrentPosition = Position.values()[(currentPosition.ordinal() + 1) % Position.values().length];
-			sw.property(ModelConstants.CURRENTPOSITION, newCurrentPosition.toString());
+			driver.traversal()
+				.V(match.getSw())
+				.property(ModelConstants.CURRENTPOSITION, newCurrentPosition.toString())
+				.iterate();
 		}
 	}
 

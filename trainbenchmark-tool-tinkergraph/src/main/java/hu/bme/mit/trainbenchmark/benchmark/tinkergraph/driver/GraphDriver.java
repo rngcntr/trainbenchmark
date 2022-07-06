@@ -19,7 +19,6 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 
 import javax.script.Bindings;
 import javax.script.ScriptException;
@@ -28,29 +27,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class GraphDriver<TGraph extends Graph> extends Driver {
+public abstract class GraphDriver extends Driver {
 
-	public static final String LABEL = "label";
-	protected TGraph graph;
+	protected GraphTraversalSource g;
+	protected Graph graph;
 
 	protected GraphDriver() throws IOException {
 		super();
 	}
 
-	public Collection<Vertex> getVertices(final String type) {
-		final Collection<Vertex> vertices = new ArrayList<>();
-
-		final Iterable<Vertex> allVertices = () -> graph.vertices();
-		for (final Vertex vertex : allVertices) {
-			if (vertex.label().equals(type)) {
-				vertices.add(vertex);
-			}
-		}
-
-		return vertices;
+	public GraphTraversalSource traversal() {
+		return g;
 	}
 
-	public TGraph getGraph() {
+	public Graph getGraph() {
 		return graph;
 	}
 
@@ -59,14 +49,9 @@ public abstract class GraphDriver<TGraph extends Graph> extends Driver {
 		return "-tinkerpop.graphml";
 	}
 
-	@Override
-	public void read(String modelPath) throws Exception {
-		graph.io(IoCore.graphml()).readGraph(modelPath);
-	}
-
 	public Collection<TinkerGraphMatch> runQuery(final RailwayQuery query, final String queryDefinition) throws ScriptException {
+		System.out.printf("Running Query: %s\n", queryDefinition);
 		final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
-		final GraphTraversalSource g = graph.traversal();
 		final Bindings bindings = engine.createBindings();
 		bindings.put("g", g);
 
@@ -87,7 +72,7 @@ public abstract class GraphDriver<TGraph extends Graph> extends Driver {
 	}
 
 	@Override
-	public Number generateNewVertexId() throws Exception {
+	public Number generateNewVertexId() {
 		return 0;
 	}
 

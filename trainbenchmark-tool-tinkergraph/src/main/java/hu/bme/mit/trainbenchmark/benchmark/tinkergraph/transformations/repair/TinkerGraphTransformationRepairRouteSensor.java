@@ -29,9 +29,10 @@ public class TinkerGraphTransformationRepairRouteSensor<TTinkerGraphDriver exten
 	@Override
 	public void activate(final Collection<TinkerGraphRouteSensorMatch> matches) {
 		for (final TinkerGraphRouteSensorMatch match : matches) {
-			final Vertex route = match.getRoute();
-			final Vertex sensor = match.getSensor();
-			route.addEdge(ModelConstants.REQUIRES, sensor);
+			driver.traversal().addE(ModelConstants.REQUIRES)
+				.from(match.getRoute())
+				.to(match.getSensor())
+				.iterate();
 		}
 	}
 

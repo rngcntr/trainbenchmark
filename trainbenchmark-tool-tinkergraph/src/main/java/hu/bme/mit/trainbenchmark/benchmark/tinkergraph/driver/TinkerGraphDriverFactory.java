@@ -5,8 +5,8 @@ import hu.bme.mit.trainbenchmark.benchmark.driver.DriverFactory;
 public class TinkerGraphDriverFactory extends DriverFactory<GraphDriver> {
 
 	@Override
-	public TinkerGraphDriver createInstance() throws Exception {
-		return new TinkerGraphDriver();
+	public GraphDriver createInstance() throws Exception {
+		return new RemoteTinkerGraphDriver();
 	}
 
 }

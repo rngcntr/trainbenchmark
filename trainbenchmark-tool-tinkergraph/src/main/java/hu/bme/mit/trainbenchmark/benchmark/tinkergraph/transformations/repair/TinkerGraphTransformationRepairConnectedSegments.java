@@ -30,11 +30,17 @@ public class TinkerGraphTransformationRepairConnectedSegments<TTinkerGraphDriver
 	public void activate(final Collection<TinkerGraphConnectedSegmentsMatch> matches) {
 		for (final TinkerGraphConnectedSegmentsMatch match : matches) {
 			// delete segment2 with all its relationships
-			final Vertex segment2 = match.getSegment2();
-			segment2.remove();
+			driver.traversal().V(match.getSegment2()).drop().iterate();
+			//final Vertex segment2 = match.getSegment2();
+			//segment2.remove();
 
 			// (segment1)-[:connectsTo]->(segment3)
-			match.getSegment1().addEdge(ModelConstants.CONNECTS_TO, match.getSegment3());
+			driver.traversal()
+				.addE(ModelConstants.CONNECTS_TO)
+				.from(match.getSegment1())
+				.to(match.getSegment3())
+				.iterate();
+			//match.getSegment1().addEdge(ModelConstants.CONNECTS_TO, match.getSegment3());
 		}
 	}
 

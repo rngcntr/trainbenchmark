@@ -49,7 +49,7 @@ ext {
 	sesameVersion = '2.9.0'
 	slf4jVersion = '1.7.10'
 	sqliteVersion = '3.20.0'
-	tinkerGraphVersion = '3.2.5'
+	tinkerGraphVersion = '3.6.0'
 	viatraVersion = '1.6.1'
 	xtextVersion = '2.26.0'
 }

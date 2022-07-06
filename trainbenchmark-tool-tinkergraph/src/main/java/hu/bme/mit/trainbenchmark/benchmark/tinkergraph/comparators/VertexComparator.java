@@ -11,7 +11,6 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.tinkergraph.comparators;
 
-import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import java.util.Comparator;
@@ -20,8 +19,8 @@ public class VertexComparator implements Comparator<Vertex> {
 
 	@Override
 	public int compare(final Vertex v1, final Vertex v2) {
-		final long id1 = extractLong(v1.property(ModelConstants.ID).value());
-		final long id2 = extractLong(v2.property(ModelConstants.ID).value());
+		final long id1 = extractLong(v1.id());
+		final long id2 = extractLong(v2.id());
 		return Long.compare(id1, id2);
 	}
 

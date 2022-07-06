@@ -30,13 +30,10 @@ public class TinkerGraphTransformationRepairPosLength<TTinkerGraphDriver extends
 	@Override
 	public void activate(final Collection<TinkerGraphPosLengthMatch> matches) {
 		for (final TinkerGraphPosLengthMatch match : matches) {
-			final Vertex segment = match.getSegment();
-			final Integer length = match.getLength();
-			try {
-				segment.property(LENGTH, -length + 1);
-			} catch (final IllegalStateException e) {
-				// do nothing (vertex has been removed)
-			}
+			driver.traversal()
+				.V(match.getSegment())
+				.property(LENGTH, -match.getLength() + 1)
+				.iterate();
 		}
 	}
 

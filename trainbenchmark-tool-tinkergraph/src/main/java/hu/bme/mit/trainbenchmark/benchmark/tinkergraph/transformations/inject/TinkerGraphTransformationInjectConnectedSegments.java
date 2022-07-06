@@ -16,6 +16,7 @@ import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.matches.TinkerGraphConnec
 import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.transformations.TinkerGraphTransformation;
 import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.constants.TrainBenchmarkConstants;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -33,26 +34,24 @@ public class TinkerGraphTransformationInjectConnectedSegments<TTinkerGraphDriver
 	public void activate(final Collection<TinkerGraphConnectedSegmentsInjectMatch> matches) throws Exception {
 		for (final TinkerGraphConnectedSegmentsInjectMatch match : matches) {
 			// create (segment2) node
-			final Vertex segment2 = driver.getGraph().addVertex(ModelConstants.SEGMENT);
-			segment2.property(ModelConstants.ID, driver.generateNewVertexId());
-			segment2.property(ModelConstants.LENGTH, TrainBenchmarkConstants.DEFAULT_SEGMENT_LENGTH);
+			Vertex segment2 = driver.traversal().addV(ModelConstants.SEGMENT)
+				.property(ModelConstants.ID, driver.generateNewVertexId())
+				.property(ModelConstants.LENGTH, TrainBenchmarkConstants.DEFAULT_SEGMENT_LENGTH)
+				.next();
 
 			// (segment2)-[:monitoredBy]->(sensor)
-			segment2.addEdge(ModelConstants.MONITORED_BY, match.getSensor());
+			driver.traversal().addE(ModelConstants.MONITORED_BY).from(segment2).to(match.getSensor()).iterate();
 
 			// (segment1)-[:connectsTo]->(segment2)
-			match.getSegment1().addEdge(ModelConstants.CONNECTS_TO, segment2);
+			driver.traversal().addE(ModelConstants.CONNECTS_TO).from(match.getSegment1()).to(segment2).iterate();
 			// (segment2)-[:connectsTo]->(segment3)
-			segment2.addEdge(ModelConstants.CONNECTS_TO, match.getSegment3());
+			driver.traversal().addE(ModelConstants.CONNECTS_TO).from(segment2).to(match.getSegment3()).iterate();
 
 			// remove (segment1)-[:connectsTo]->(segment3)
-			final Iterable<Edge> connectsToEdges = () -> match.getSegment1().edges(Direction.OUT,
-					ModelConstants.CONNECTS_TO);
-			for (final Edge connectsToEdge : connectsToEdges) {
-				if (connectsToEdge.inVertex().equals(match.getSegment3())) {
-					connectsToEdge.remove();
-				}
-			}
+			driver.traversal().V(match.getSegment1())
+				.outE(ModelConstants.CONNECTS_TO)
+				.where(__.inV().is(match.getSegment3()))
+				.drop().iterate();
 		}
 	}
 
