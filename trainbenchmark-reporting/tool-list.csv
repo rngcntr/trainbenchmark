@@ -6,6 +6,7 @@ MySQL
 Neo4j (Core API-CSV)
 Neo4j (Cypher-GraphML)
 SQLite
-TinkerGraph
+TinkerGraph.Local
+TinkerGraph.Remote
 VIATRA (Incremental)
 VIATRA (Local Search)

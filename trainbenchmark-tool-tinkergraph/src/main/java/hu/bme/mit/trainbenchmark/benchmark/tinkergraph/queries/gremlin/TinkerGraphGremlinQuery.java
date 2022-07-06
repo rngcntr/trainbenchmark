@@ -12,6 +12,7 @@
 package hu.bme.mit.trainbenchmark.benchmark.tinkergraph.queries.gremlin;
 
 import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.driver.GraphDriver;
+import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.driver.RemoteMaterializedTinkerGraphDriver;
 import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.matches.TinkerGraphMatch;
 import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.queries.TinkerGraphQuery;
 import hu.bme.mit.trainbenchmark.constants.RailwayQuery;
@@ -35,7 +36,8 @@ public class TinkerGraphGremlinQuery<TTinkerGraphMatch extends TinkerGraphMatch,
 		this.query = query;
 		this.queryDefinition =
 			FileUtils.readFileToString(
-				new File(workspaceDir + "trainbenchmark-tool-tinkergraph/src/main/resources/queries/" + query + ".gremlin"),
+				new File(workspaceDir + "trainbenchmark-tool-tinkergraph/src/main/resources/queries/"
+					+ (driver instanceof RemoteMaterializedTinkerGraphDriver ? "incremental" : "adhoc") + "/" + query + ".gremlin"),
 				StandardCharsets.UTF_8
 			);
 	}

@@ -30,7 +30,7 @@ public class TinkerGraphBenchmarkConfig extends BenchmarkConfig {
 
 	@Override
 	public String getToolName() {
-		return "TinkerGraph";
+		return "TinkerGraph." + engine.toString();
 	}
 
 	@Override

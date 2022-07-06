@@ -5,8 +5,13 @@ shadowJar {
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.generator.graph.tinkerpop.TinkerGraphGeneratorMain' }
 }
 
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
 dependencies {
-  compile project(':trainbenchmark-generator')
-  compile group: 'org.apache.tinkerpop', name: 'tinkergraph-gremlin', version: tinkerGraphVersion
-  compile group: 'org.slf4j', name: 'slf4j-nop', version: slf4jVersion
+    compile project(':trainbenchmark-generator')
+    compile group: 'org.apache.tinkerpop', name: 'tinkergraph-gremlin', version: tinkerGraphVersion
+    compile group: 'org.slf4j', name: 'slf4j-nop', version: slf4jVersion
 }

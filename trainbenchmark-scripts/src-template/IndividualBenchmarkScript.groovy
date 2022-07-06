@@ -31,7 +31,7 @@ ResultHelper.saveConfiguration(benchmarkId)
 def ec = new ExecutionConfig(2000, 4000)
 
 def minSize = 1
-def maxSize = 4
+def maxSize = 4 // 4
 def timeout = 900
 def runs = 5
 
@@ -57,7 +57,9 @@ def tools = [
         //new Neo4jBenchmarkConfigBuilder().setEngine(Neo4jEngine.CORE_API).setGraphFormat(Neo4jGraphFormat.CSV    ),
         //new Neo4jBenchmarkConfigBuilder().setEngine(Neo4jEngine.CYPHER ).setGraphFormat(Neo4jGraphFormat.GRAPHML),
         //new SQLiteBenchmarkConfigBuilder(),
-		new TinkerGraphBenchmarkConfigBuilder().setEngine(TinkerGraphEngine.GREMLIN),
+		new TinkerGraphBenchmarkConfigBuilder().setEngine(TinkerGraphEngine.LOCAL),
+		new TinkerGraphBenchmarkConfigBuilder().setEngine(TinkerGraphEngine.REMOTE),
+		new TinkerGraphBenchmarkConfigBuilder().setEngine(TinkerGraphEngine.REMOTE_MATERIALIZED),
         //new ViatraBenchmarkConfigBuilder().setBackend(ViatraBackend.INCREMENTAL),
         //new ViatraBenchmarkConfigBuilder().setBackend(ViatraBackend.LOCAL_SEARCH),
 ]

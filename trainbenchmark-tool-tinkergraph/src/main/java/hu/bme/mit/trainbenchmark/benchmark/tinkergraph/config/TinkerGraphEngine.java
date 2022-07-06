@@ -1,7 +1,9 @@
 package hu.bme.mit.trainbenchmark.benchmark.tinkergraph.config;
 
 public enum TinkerGraphEngine {
-	CORE_API("Core API"), GREMLIN("Gremlin");
+	LOCAL("Local"),
+	REMOTE("Remote"),
+	REMOTE_MATERIALIZED("RemoteMaterialized");
 
 	private String name;
 

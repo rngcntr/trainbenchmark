@@ -8,7 +8,8 @@ Neo4j (Core API-GraphML),property graph,disk-resident
 Neo4j (Cypher-GraphML),property graph,disk-resident
 Neo4j (Core API-Binary),property graph,disk-resident
 Neo4j (Cypher-Binary),property graph,disk-resident
-TinkerGraph,property graph,in-memory
+TinkerGraph.Remote,property graph,in-memory
+TinkerGraph.Local,property graph,in-memory
 Jena (Inferencing),RDF,in-memory
 Jena (No Inferencing),RDF,in-memory
 MySQL,SQL,disk-resident

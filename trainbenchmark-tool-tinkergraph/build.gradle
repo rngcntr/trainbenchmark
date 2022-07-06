@@ -5,6 +5,11 @@ shadowJar {
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.benchmark.tinkergraph.TinkerGraphBenchmarkMain' }
 }
 
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
 dependencies {
 	compile project(':trainbenchmark-tool')
 	compile group: 'org.apache.tinkerpop', name: 'tinkergraph-gremlin', version: tinkerGraphVersion
