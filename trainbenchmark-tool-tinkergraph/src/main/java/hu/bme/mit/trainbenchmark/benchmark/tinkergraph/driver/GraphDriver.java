@@ -50,7 +50,7 @@ public abstract class GraphDriver extends Driver {
 	}
 
 	public Collection<TinkerGraphMatch> runQuery(final RailwayQuery query, final String queryDefinition) throws ScriptException {
-		System.out.printf("Running Query: %s\n", queryDefinition);
+		//System.out.printf("Running Query: %s\n", queryDefinition);
 		final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
 		final Bindings bindings = engine.createBindings();
 		bindings.put("g", g);

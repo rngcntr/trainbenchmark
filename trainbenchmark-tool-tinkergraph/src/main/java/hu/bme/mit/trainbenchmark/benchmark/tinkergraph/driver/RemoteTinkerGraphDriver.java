@@ -10,18 +10,25 @@ import java.io.IOException;
 
 public class RemoteTinkerGraphDriver extends GraphDriver {
 
+	private Cluster cluster;
+
 	protected RemoteTinkerGraphDriver() throws IOException {
-		Cluster cluster = Cluster.build()
+		cluster = Cluster.build()
 			.addContactPoint("localhost")
 			.port(8182)
 			.serializer(Serializers.GRAPHBINARY_V1D0.simpleInstance())
 			.create();
 		try {
 			g = AnonymousTraversalSource.traversal().withRemote(DriverRemoteConnection.using(cluster, "g"));
-			g.V().drop().iterate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void destroy() {
+		g.V().drop().iterate();
+		cluster.close();
 	}
 
 	@Override
